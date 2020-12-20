@@ -20,6 +20,10 @@
     "default_icon": "icons/icon-33.png",
     "default_title": "Arxiver",
     "default_popup": "popup/main.html"
-  }
+  },
+
+  "web_accessible_resources": [
+    "doc/*"
+  ]
 
 }
