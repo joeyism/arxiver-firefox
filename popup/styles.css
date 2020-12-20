@@ -1,0 +1,33 @@
+body {
+  font-family: 'Lucida Grande', helvetica, arial, verdana, sans-serif;
+
+}
+table, th, td {
+  border: 1px solid black;
+}
+
+.button.save {
+  background-color:#b31b1b;
+  color: white;
+  padding: 10px;
+  border-style: none;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.arrow {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+}
+
+.right {
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+}
+
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
