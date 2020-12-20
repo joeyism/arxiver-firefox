@@ -1,5 +1,5 @@
-const SHORTENED_TEXT_LENGTH = 15
-const TABLE_HEADER_NAMES = ["Paper Name", "Authors", "Summary", "Site", "PDF"]
+const SHORTENED_TEXT_LENGTH = 25
+const TABLE_HEADER_NAMES = ["Paper Name", "Authors", "Summary", "Site", "PDF", ""]
 
 const reportError = (error) => {
     console.error(`Could not arxiver: ${error}`);
@@ -44,13 +44,13 @@ const getArxivData = async (id) => {
     return await get("https://arxiver.herokuapp.com/" + id)
 }
 
-const save = async (tabs) => {
+const saveLink = async (tabs) => {
     url = tabs[0].url
+    url = "https://arxiv.org/abs/2010.15327v1"
     arxivId = extractIdFromUrl(url)
     results = await getArxivData(arxivId)
     body = await results.json()
     let arxivData = await browser.storage.local.get("arxiv_data")
-    console.log(arxivData)
     if (Object.keys(arxivData).length === 0 && arxivData.constructor === Object){
         arxivData = {"arxiv_data": {}}
     }
@@ -73,12 +73,17 @@ const createTableHeader = () => {
     return row
 }
 
-const createTableRow = (arxivBody) => {
+const createTableRow = (arxivId, arxivBody) => {
     const row = document.createElement("tr")
     const data = [arxivBody.title, arxivBody.author, arxivBody.summary]
     data.forEach(val => {
       const cell = document.createElement("td")
-      cell.appendChild(document.createTextNode(shorten(val)))
+      const div = document.createElement("div")
+      const span = document.createElement("span")
+      span.title = val
+      span.appendChild(document.createTextNode(shorten(val)))
+      div.appendChild(span)
+      cell.appendChild(div)
       row.appendChild(cell);
     })
 
@@ -95,6 +100,14 @@ const createTableRow = (arxivBody) => {
     pdf.appendChild(document.createTextNode("PDF"))
     pdfCell.append(pdf)
     row.append(pdfCell)
+
+    const removeCell = document.createElement("td")
+    const x_span = document.createElement("span")
+    x_span.id = `${arxivId}-remove`
+    x_span.className = "remove"
+    x_span.appendChild(document.createTextNode("❌"))
+    removeCell.append(x_span)
+    row.append(removeCell)
     return row
 }
 
@@ -102,8 +115,8 @@ const renderTable = (arxivData) => {
     const mainTable = document.getElementById("main-table")
     mainTable.innerHTML = ""
     mainTable.append(createTableHeader())
-    arxivData.forEach(arxivBody => {
-      const row = createTableRow(arxivBody)
+    arxivData.forEach(eachData => {
+      const row = createTableRow(eachData[0], eachData[1])
       mainTable.append(row)
     })
 }
@@ -111,11 +124,20 @@ const renderTable = (arxivData) => {
 const render = async () => {
     const results = await browser.storage.local.get("arxiv_data")
     arxivData = results["arxiv_data"] || []
-    renderTable(Object.values(arxivData))
+    renderTable(Object.entries(arxivData))
+}
+
+const removeRow = async(id) => {
+    const arxivData = await browser.storage.local.get("arxiv_data")
+    delete arxivData["arxiv_data"][id]
+    await browser.storage.local.set(arxivData)
+    renderTable(Object.entries(arxivData["arxiv_data"]))
 }
 
 const filterArxivDataByText = (arxivData, text) => {
-    return arxivData.filter((arxivBody) => {
+    return arxivData.filter(eachArxivData => {
+        arxivId = eachArxivData[0]
+        arxivBody = eachArxivData[1]
         return arxivBody.summary.indexOf(text) > -1 || arxivBody.title.indexOf(text) > -1 || arxivBody.author.indexOf(text) > -1
     })
 }
@@ -123,10 +145,13 @@ const filterArxivDataByText = (arxivData, text) => {
 document.addEventListener("click", async (e) => {
     if (e.target.classList.contains("save")) {
         const tabs = await browser.tabs.query({active: true, currentWindow: true})
-        await save(tabs)
+        await saveLink(tabs)
     }
     else if (e.target.id == "toggle-table"){
         toggleElementById("table-div")
+    }
+    else if (e.target.id.endsWith("-remove")){
+        await removeRow(e.target.id.substring(0, e.target.id.length - 7))
     }
 })
 
@@ -134,7 +159,7 @@ document.getElementById("search").addEventListener("input", async (e) => {
     const elem = e.target
     const searchValue = elem.value
     const results = await browser.storage.local.get("arxiv_data")
-    const arxivData = Object.values(results["arxiv_data"])
+    const arxivData = Object.entries(results["arxiv_data"])
     const filteredArxivData = filterArxivDataByText(arxivData, searchValue)
     renderTable(filteredArxivData)
 })

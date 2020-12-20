@@ -3,7 +3,6 @@ body {
 
 }
 table, th, td {
-  border: 1px solid black;
 }
 
 .button.save {
@@ -30,4 +29,8 @@ table, th, td {
 .down {
   transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
+}
+
+.remove {
+  cursor: pointer;
 }

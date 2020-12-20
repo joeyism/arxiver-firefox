@@ -2,7 +2,7 @@
 
   "manifest_version": 2,
   "name": "Arxiver",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Handy tool for Arxiv to save papers, and filter through them easily later. Included is the ability to search for a paper you have saved by keywords, author, title, description, etc.",
   "author": "joeyism",
   "homepage_url": "https://github.com/joeyism/arxiver-firefox",
@@ -24,6 +24,12 @@
 
   "web_accessible_resources": [
     "doc/*"
-  ]
+  ],
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{90c468d8-2106-4c23-ac14-999454736932}"
+    }
+  }
 
 }
