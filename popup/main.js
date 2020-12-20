@@ -46,13 +46,13 @@ const getArxivData = async (id) => {
 
 const save = async (tabs) => {
     url = tabs[0].url
-    url = "https://arxiv.org/pdf/1902.05888.pdf"
     arxivId = extractIdFromUrl(url)
     results = await getArxivData(arxivId)
     body = await results.json()
     let arxivData = await browser.storage.local.get("arxiv_data")
-    if (arxivData == null){
-        arxivData = {}
+    console.log(arxivData)
+    if (Object.keys(arxivData).length === 0 && arxivData.constructor === Object){
+        arxivData = {"arxiv_data": {}}
     }
     arxivData["arxiv_data"][arxivId] = body
     await browser.storage.local.set(arxivData)
@@ -110,7 +110,7 @@ const renderTable = (arxivData) => {
 
 const render = async () => {
     const results = await browser.storage.local.get("arxiv_data")
-    arxivData = results["arxiv_data"]
+    arxivData = results["arxiv_data"] || []
     renderTable(Object.values(arxivData))
 }
 
@@ -148,6 +148,3 @@ try {
 } catch(e) {
     console.error(e)
 }
-addEventListener("load", function() {
-    setTimeout(function() { alert("something"); }, 0);
-});

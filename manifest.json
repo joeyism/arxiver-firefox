@@ -2,18 +2,18 @@
 
   "manifest_version": 2,
   "name": "Arxiver",
-  "version": "1.0",
+  "version": "1.0.1",
   "description": "Handy tool for Arxiv. Allows you to save Arxiv files for later viewing. Has a search functionality too.",
+  "author": "joeyism",
   "homepage_url": "https://github.com/joeyism/arxiver-firefox",
   "icons": {
-    "48": "icons/icon.png"
+    "48": "icons/icon-48.png"
   },
 
   "permissions": [
-    "*://*.arxiv.org/*",
+    "https://arxiv.org/*",
     "activeTab",
-    "storage",
-    "webRequest"
+    "storage"
   ],
 
   "browser_action": {
@@ -21,6 +21,5 @@
     "default_title": "Arxiver",
     "default_popup": "popup/main.html"
   }
-
 
 }
