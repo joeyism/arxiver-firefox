@@ -1,5 +1,5 @@
 # arxiver, an extension for Firefox.
-Handy tool for Arxiv. Allows you to save Arxiv files for later viewing. Has a search functionality too.
+Handy tool for Arxiv to save papers, and filter through them later. Included is the ability to search for a paper you have saved by keywords, author, title, description, etc.
 
 ## Installation
 You can find the latest releases on [release page](https://github.com/joeyism/arxiver-firefox/releases)

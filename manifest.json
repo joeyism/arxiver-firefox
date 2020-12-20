@@ -2,8 +2,8 @@
 
   "manifest_version": 2,
   "name": "Arxiver",
-  "version": "1.0.1",
-  "description": "Handy tool for Arxiv. Allows you to save Arxiv files for later viewing. Has a search functionality too.",
+  "version": "1.0.2",
+  "description": "Handy tool for Arxiv to save papers, and filter through them easily later. Included is the ability to search for a paper you have saved by keywords, author, title, description, etc.",
   "author": "joeyism",
   "homepage_url": "https://github.com/joeyism/arxiver-firefox",
   "icons": {
