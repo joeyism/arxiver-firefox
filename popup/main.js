@@ -46,7 +46,6 @@ const getArxivData = async (id) => {
 
 const saveLink = async (tabs) => {
     url = tabs[0].url
-    url = "https://arxiv.org/abs/2010.15327v1"
     arxivId = extractIdFromUrl(url)
     results = await getArxivData(arxivId)
     body = await results.json()
