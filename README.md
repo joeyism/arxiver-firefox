@@ -35,8 +35,8 @@ After you have many saved
 
 You can filter by keyword
 
-![](/doc/usage-keyword.png)
+![](/doc/usage-search-keyword.png)
 
 You can also filter by author
 
-![](/doc/usage-author.png)
+![](/doc/usage-search-author.png)
