@@ -4,12 +4,16 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="styles.css"/>
+    <link rel="stylesheet" href="bootstrap-grid.min.css"/>
   </head>
 
 <body>
   <div id="popup-content">
-    <div id="button-area">
-        <button class="button save">Save This Paper</button>
+    <div id="button-area" class="row">
+        <button class="col button save">Save This Paper</button>
+        <div class="col">
+            <img id="loading-gif" style="display: none;" class="loading-gif" src="loading.gif"/>
+        </div>
     </div>
     <div id="toggle-table" style="cursor: pointer;">
         <i id="table-div-arrow" class="arrow right"></i>

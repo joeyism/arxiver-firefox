@@ -11,6 +11,7 @@ table, th, td {
   padding: 10px;
   border-style: none;
   margin-bottom: 10px;
+  margin-left: 10px;
   cursor: pointer;
 }
 
@@ -33,4 +34,8 @@ table, th, td {
 
 .remove {
   cursor: pointer;
+}
+
+.loading-gif{
+  width: 40px;
 }

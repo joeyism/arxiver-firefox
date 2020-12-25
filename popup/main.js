@@ -1,5 +1,5 @@
 const SHORTENED_TEXT_LENGTH = 25
-const TABLE_HEADER_NAMES = ["Paper Name", "Authors", "Summary", "Site", "PDF", ""]
+const TABLE_HEADER_NAMES = ["Paper Name", "Authors", "Summary", "Site", "PDF", "Read", ""]
 
 const reportError = (error) => {
     console.error(`Could not arxiver: ${error}`);
@@ -45,7 +45,9 @@ const getArxivData = async (id) => {
 }
 
 const saveLink = async (tabs) => {
+    toggleElementById("loading-gif")
     url = tabs[0].url
+    // url = "https://arxiv.org/abs/1411.1784"
     arxivId = extractIdFromUrl(url)
     results = await getArxivData(arxivId)
     body = await results.json()
@@ -56,6 +58,7 @@ const saveLink = async (tabs) => {
     arxivData["arxiv_data"][arxivId] = body
     await browser.storage.local.set(arxivData)
     render()
+    toggleElementById("loading-gif")
 }
 
 const shorten = (text) => {
@@ -100,6 +103,12 @@ const createTableRow = (arxivId, arxivBody) => {
     pdfCell.append(pdf)
     row.append(pdfCell)
 
+    const readCheckbox = document.createElement("input")
+    readCheckbox.type = "checkbox"
+    readCheckbox.id = `${arxivId}-read`
+    readCheckbox.checked = arxivBody.isRead
+    row.append(readCheckbox)
+
     const removeCell = document.createElement("td")
     const x_span = document.createElement("span")
     x_span.id = `${arxivId}-remove`
@@ -141,6 +150,12 @@ const filterArxivDataByText = (arxivData, text) => {
     })
 }
 
+const toggleRead = async(id) => {
+    const arxivData = await browser.storage.local.get("arxiv_data")
+    arxivData["arxiv_data"][id].isRead = document.getElementById(`${id}-read`).checked
+    await browser.storage.local.set(arxivData)
+}
+
 document.addEventListener("click", async (e) => {
     if (e.target.classList.contains("save")) {
         const tabs = await browser.tabs.query({active: true, currentWindow: true})
@@ -151,6 +166,9 @@ document.addEventListener("click", async (e) => {
     }
     else if (e.target.id.endsWith("-remove")){
         await removeRow(e.target.id.substring(0, e.target.id.length - 7))
+    }
+    else if (e.target.id.endsWith("-read")){
+        await toggleRead(e.target.id.substring(0, e.target.id.length - 5))
     }
 })
 
